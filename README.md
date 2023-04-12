@@ -13,3 +13,18 @@ Rest API Endpoint
 -- Returns - Status200Ok, Status404NotFound
 
 No Authorization for this application
+
+RentalDataBase Schema
+Property
+- PropertyId
+- Name -- Name of the property
+- Unit -- Unit identifier at the address of the property (apartments for example)
+- Street (From the street, you get the city, state, country)
+- bedrooms --Number of bedrooms in the apartment
+- rent -- Cost for the unit
+
+Renter
+- 
+
+country (1 to many) state (1 to many) city (1 to many) street
+Each street contains a zip-code since a city can have multiple
