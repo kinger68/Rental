@@ -15,8 +15,7 @@ public class RentalPropertyService : IRentalPropertyService
     public async Task<IEnumerable<RentalProperty>> FindRentalProperties(string city)
     {
         // Get the city_id for the specified city
-        int cityId = 1;
-        var rentalProperties = await _rentalPropertyRepository.GetRentalPropertiesByCity(cityId);
+        var rentalProperties = await _rentalPropertyRepository.GetRentalPropertiesByCity(city);
 
         return rentalProperties.Select(rentalProperty => rentalProperty);
     }
