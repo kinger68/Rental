@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Rental.Model;
+using Rental.Services;
 
 namespace Rental.Controllers;
 
@@ -7,26 +8,21 @@ namespace Rental.Controllers;
 [Route("[controller]")]
 public class RentalPropertyController : ControllerBase
 {
-    private readonly ILogger<RentalPropertyController> _logger;
+    private readonly IRentalPropertyService _rentalPropertyService;
 
-    public RentalPropertyController(ILogger<RentalPropertyController> logger)
+    public RentalPropertyController(IRentalPropertyService rentalPropertyService)
     {
-        _logger = logger;
+        _rentalPropertyService = rentalPropertyService;
     }
 
-    [HttpGet(Name = "GetRentalProperty")]
-    public IEnumerable<RentalProperty> Get()
+    [HttpGet]
+    [Route("api/v1/rentalproperties")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentalProperty>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetRentalProperties(
+        [FromQuery] string city)
     {
-        return Enumerable.Range(1, 3).Select(index => new RentalProperty()
-            {
-                Street = "123 Some Drive",
-                City = "Waltham",
-                State = "MA",
-                ZipCode = "01803",
-                Description = "A description of the property",
-                RentAmount = 3000.23,
-                Bedrooms = 3,
-            })
-            .ToArray();
+        IEnumerable<RentalProperty> rentalProperties = await _rentalPropertyService.FindRentalProperties(city);
+        return new JsonResult(rentalProperties);
     }
 }

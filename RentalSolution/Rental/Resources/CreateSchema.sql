@@ -50,10 +50,11 @@ CREATE TABLE street (
     FOREIGN KEY(city_id) REFERENCES city(id)
 );
 INSERT INTO street(id, name, city_id, zip_code) VALUES (1,'Beacon Street', 3, '02116');
+INSERT INTO street(id, name, city_id, zip_code) VALUES (2,'1st Lane', 4, '82609');
 
 -- Rental Property Table Creation
 CREATE TABLE rental_property (
-    id              INTEGER PRIMARY KEY,
+    id              INTEGER AUTO_INCREMENT PRIMARY KEY,
     name	        VARCHAR(255) NOT NULL,
     street_id   	INTEGER NOT NULL,
     rent            NUMERIC NOT NULL,
@@ -61,6 +62,8 @@ CREATE TABLE rental_property (
     unit        	VARCHAR(63),
     FOREIGN KEY(street_id) REFERENCES street(id)
 );
+INSERT INTO rental_property(name, street_id, rent, bedrooms, unit) VALUES ('ThemPlaces-Boston', 1, 2000, 3, 'Unit 5');
+INSERT INTO rental_property(name, street_id, rent, bedrooms, unit) VALUES ('ThemPlaces-Casper', 2, 1000, 1, 'Unit WildWest 6');
 
 CREATE TABLE renter (
     renter_id           INTEGER PRIMARY KEY ,
