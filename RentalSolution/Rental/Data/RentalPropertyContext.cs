@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Rental.Model;
-
+using Rental.Data.DataModels;
 namespace Rental.Data;
 
 public class RentalPropertyContext : DbContext
@@ -15,7 +14,7 @@ public class RentalPropertyContext : DbContext
         this.connectionString = "server=127.0.0.1;uid=root;pwd=;database=Rental";
     }
     
-    public DbSet<RentalProperty> RentalProperties { get; set; }
+    public DbSet<RentalPropertyDto> RentalProperties { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

@@ -1,6 +1,6 @@
 -- Drop tables in reverse order to to Foreign Key Constraints
-DROP TABLE IF EXISTS renter;
-DROP TABLE IF EXISTS rental_property;
+DROP TABLE IF EXISTS renters;
+DROP TABLE IF EXISTS rentalProperties;
 DROP TABLE IF EXISTS streets;
 DROP TABLE IF EXISTS cities;
 DROP TABLE IF EXISTS state;
@@ -51,9 +51,10 @@ CREATE TABLE streets (
 );
 INSERT INTO streets(id, name, cityId, zipcode) VALUES (1,'Beacon Street', 2, '02116');
 INSERT INTO streets(id, name, cityId, zipcode) VALUES (2,'1st Lane', 4, '82609');
+INSERT INTO streets(id, name, cityId, zipcode) VALUES (3,'Causeway Street', 2, '02116');
 
 -- Rental Property Table Creation
-CREATE TABLE rental_property (
+CREATE TABLE rentalProperties (
     id              INTEGER AUTO_INCREMENT PRIMARY KEY,
     name	        VARCHAR(255) NOT NULL,
     streetId    	INTEGER NOT NULL,
@@ -63,10 +64,11 @@ CREATE TABLE rental_property (
     createdAt       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(streetId) REFERENCES streets(id)
 );
-INSERT INTO rental_property(name, streetId, rent, bedrooms, unit) VALUES ('ThemPlaces-Boston', 1, 2000, 3, 'Unit 5');
-INSERT INTO rental_property(name, streetId, rent, bedrooms, unit) VALUES ('ThemPlaces-Casper', 2, 1000, 1, 'Unit WildWest 6');
+INSERT INTO rentalProperties(name, streetId, rent, bedrooms, unit) VALUES ('ThemPlaces-Boston', 1, 2000, 3, 'Unit 5');
+INSERT INTO rentalProperties(name, streetId, rent, bedrooms, unit) VALUES ('ThemPlaces-Casper', 2, 1000, 1, 'Unit WildWest 6');
+INSERT INTO rentalProperties(name, streetId, rent, bedrooms, unit) VALUES ('SomeOtherPlaces-Boston', 1, 2000, 3, 'Penthouse');
 
-CREATE TABLE renter (
+CREATE TABLE renters (
     id                      INTEGER PRIMARY KEY ,
     firstName 	            VARCHAR(63) NOT NULL,
     middleName	            INTEGER,
@@ -74,6 +76,6 @@ CREATE TABLE renter (
     propertyId	            INTEGER,
     currentAddressStreetId  INTEGER NOT NULL,
     createdAt               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(propertyId) REFERENCES rental_property(id),
+    FOREIGN KEY(propertyId) REFERENCES rentalProperties(id),
     FOREIGN KEY(currentAddressStreetId) REFERENCES streets(id)
 );

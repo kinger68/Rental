@@ -1,24 +1,42 @@
 using Rental.Data.DataModels;
+using Rental.Data.Mapping;
 using Rental.Model;
 
 namespace Rental.Data;
 
 public class EfRentalRepository : IRentalPropertyRepository
 {
-    public Task<string> CreateOrUpdateRentalPropertyAsync(RentalProperty rentalPropertyToUpsert)
+    // Map RentalProperty to DTO object
+    private RentalPropertyDto mapRentalPropertyDto(RentalProperty rpDto)
     {
-        throw new NotImplementedException();
+        RentalPropertyDto rentalPropertyDto = new RentalPropertyDto();
+        rentalPropertyDto.Name = rpDto.Name;
+        rentalPropertyDto.Rent = rpDto.Rent;
+        rentalPropertyDto.Bedrooms = rpDto.Bedrooms;
+        rentalPropertyDto.Unit = rpDto.Unit;
+
+        return rentalPropertyDto;
+    }
+    
+    public async Task<int> CreateOrUpdateRentalPropertyAsync(RentalProperty rentalPropertyToUpsert)
+    {
+        using (var rentalPropertyContext = new RentalPropertyContext(""))
+        {
+            // Red Alert - Hard coded for now. Need Repository method to get streetId from name 
+            int streetId = 2;
+            
+            // Utilize object extension to add converting to a data model
+            RentalPropertyDto rentalPropertyDto = rentalPropertyToUpsert.ToDataModel(streetId);
+
+            // Check if the property already exists, if so, modify it, otherwise create it
+            await rentalPropertyContext.AddAsync(rentalPropertyDto);
+
+            return rentalPropertyDto.Id;
+        }
     }
 
     public async Task<IEnumerable<RentalProperty>> GetRentalPropertiesByCity(string searchCity)
     {
-        // This does the find by primary key. Could also search on the city that was passed in the query
-        // City? c;
-        // using (var cityContext = new CityContext(""))
-        // {
-        //     c = cityContext.Cities.Find(2);
-        // }
-
         CityDto? city;
         using (var cityContext = new CityContext(""))
         {
@@ -31,27 +49,21 @@ public class EfRentalRepository : IRentalPropertyRepository
             streets = streetContext.Streets.Where(street => street.CityId == city.Id).ToList();
         }
 
+        var rentalProperties = new List<RentalProperty>();
+        IEnumerable<RentalPropertyDto> rProperties = new List<RentalPropertyDto>();
         foreach (StreetDto street in streets)
         {
-            // Find all the rental properties on that street
+            using (var rentalPropertyContext = new RentalPropertyContext(""))
+            {
+                rProperties = rentalPropertyContext.RentalProperties.Where(rp => rp.StreetId == street.Id);
+                foreach (RentalPropertyDto rentalPropertyDto in rProperties)
+                {
+                    RentalProperty rp = rentalPropertyDto.ToDomainModel(street.Name);
+                    rentalProperties.Add(rp);
+                }              
+            }
         }
 
-        // IEnumerable<RentalProperty> rentalProperties;
-        // using (var rentalPropertyContext = new RentalPropertyContext(""))
-        // {
-        //     rentalProperties2 = rentalPropertyContext.RentalProperties.Select(rp => rp.Street.Equals())
-        // }
-
-        var rentalProperties =  Enumerable.Range(1, 3).Select(index => new RentalProperty()
-            {
-                Name = "Rental Property Name",
-                Street = streets[0].Name,
-                Unit = city.Name,
-                Rent = 3000.23,
-                Bedrooms = 3,
-            })
-            .ToArray();
-        
         return rentalProperties.Select(rentalProperty => rentalProperty);
     }
 }
