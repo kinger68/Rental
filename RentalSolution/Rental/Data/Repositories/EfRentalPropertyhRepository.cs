@@ -23,14 +23,14 @@ public class EfRentalRepository : IRentalPropertyRepository
         using (var rentalPropertyContext = new RentalPropertyContext(""))
         {
             // Red Alert - Hard coded for now. Need Repository method to get streetId from name 
-            int streetId = 2;
+            int streetId = 3;
             
             // Utilize object extension to add converting to a data model
             RentalPropertyDto rentalPropertyDto = rentalPropertyToUpsert.ToDataModel(streetId);
 
             // Check if the property already exists, if so, modify it, otherwise create it
             await rentalPropertyContext.AddAsync(rentalPropertyDto);
-
+            await rentalPropertyContext.SaveChangesAsync();
             return rentalPropertyDto.Id;
         }
     }

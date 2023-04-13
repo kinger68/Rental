@@ -19,4 +19,9 @@ public class RentalPropertyService : IRentalPropertyService
 
         return rentalProperties.Select(rentalProperty => rentalProperty);
     }
+
+    public async Task<int> CreateRentalProperty(RentalProperty rentalProperty)
+    {
+        return await _rentalPropertyRepository.CreateOrUpdateRentalPropertyAsync(rentalProperty);
+    }
 }

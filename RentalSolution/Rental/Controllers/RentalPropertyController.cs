@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Rental.Model;
 using Rental.Services;
@@ -16,13 +17,24 @@ public class RentalPropertyController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/v1/rentalproperties")]
+    [Route("api/v1/findRentalByCity")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentalProperty>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetRentalProperties(
+    public async Task<IActionResult> GetRentalPropertiesByCity(
         [FromQuery] string city)
     {
         IEnumerable<RentalProperty> rentalProperties = await _rentalPropertyService.FindRentalProperties(city);
         return new JsonResult(rentalProperties);
+    }
+
+    [HttpPost]
+    [Route("api/v1/createRentalProperty")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentalProperty>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateRentalProperty(
+        [FromBody] RentalProperty rentalProperty)
+    {
+        int rentalPropertyId = await _rentalPropertyService.CreateRentalProperty(rentalProperty);
+        return Ok(rentalProperty);
     }
 }

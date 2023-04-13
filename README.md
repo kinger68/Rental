@@ -4,7 +4,7 @@ Application to maintain rental properties and their Renters
 Database that will store the data for the Rentals and the Renters will be SQLLite
 
 Rest API Endpoint
-- RentalPropety/api/v1/createRental - HttpPost
+- RentalPropety/api/v1/createRentalProperty - HttpPost
 -- Returns - Status200Ok, Status400BadRequest
 - RentalProperty/api/v1/findRentalByCity:city - HttpGet
 -- Returns - Status200Ok, Status404NotFound
