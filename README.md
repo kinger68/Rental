@@ -4,27 +4,22 @@ Application to maintain rental properties and their Renters
 Database that will store the data for the Rentals and the Renters will be SQLLite
 
 Rest API Endpoint
-- api/v1/createRental - HttpPost
+- RentalPropety/api/v1/createRental - HttpPost
 -- Returns - Status200Ok, Status400BadRequest
-- api/v1/findRental:id - HttpGet
+- RentalProperty/api/v1/findRentalByCity:city - HttpGet
 -- Returns - Status200Ok, Status404NotFound
-- api/v1/createRenter - HttpPost
+- RentalPrperoty/api/v1/createRenter - HttpPost
 - api/vi/findRenter:id - HttpGet
 -- Returns - Status200Ok, Status404NotFound
 
 No Authorization for this application
 
-RentalDataBase Schema
-Property
-- PropertyId
-- Name -- Name of the property
-- Unit -- Unit identifier at the address of the property (apartments for example)
-- Street (From the street, you get the city, state, country)
-- bedrooms --Number of bedrooms in the apartment
-- rent -- Cost for the unit
+SQL which creates RDB schema and populates static data along with stored procedures can be 
+found in Rental/Resources directory
 
-Renter
-- 
-
-country (1 to many) state (1 to many) city (1 to many) street
-Each street contains a zip-code since a city can have multiple
+Things still do to
+- Create Rental Property via API
+- Create and Find Renter via API
+- Stored Procedure for the add of rental property (Right now using EF with specified Domain Object)
+- Stored Procedure for the modify of rental property (Right now using EF with specified Domain Object)
+- Stored Procedure for the search of rental properties (Right now using EF and specific query)
