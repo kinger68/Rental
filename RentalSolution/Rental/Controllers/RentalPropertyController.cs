@@ -37,4 +37,15 @@ public class RentalPropertyController : ControllerBase
         int rentalPropertyId = await _rentalPropertyService.CreateRentalProperty(rentalProperty);
         return Ok(rentalProperty);
     }
+    
+    [HttpPost]
+    [Route("api/v1/createRenter")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentalProperty>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateRenter(
+        [FromBody] RentalProperty rentalProperty)
+    {
+        int rentalPropertyId = await _rentalPropertyService.CreateRentalProperty(rentalProperty);
+        return Ok(rentalProperty);
+    }
 }
