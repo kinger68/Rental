@@ -13,7 +13,9 @@ namespace RentalPropertyApiClient
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", "Rental Property Client");
+            client.BaseAddress = new Uri("http://localhost:5295/");
 
+            // await CreateRentalProperty.createRentalProperty(client);
             await QueryPropertiesByCity.QueryByCity(client, "Boston");
         }
     }

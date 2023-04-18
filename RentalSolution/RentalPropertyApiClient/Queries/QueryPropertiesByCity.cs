@@ -7,7 +7,7 @@ public class QueryPropertiesByCity
     public static async Task QueryByCity(HttpClient client, string city)
     {
         await using Stream stream = 
-            await client.GetStreamAsync("http://localhost:5295/RentalProperty/api/v1/findRentalByCity?city=" + city);
+            await client.GetStreamAsync("RentalProperty/api/v1/findRentalByCity?city=" + city);
 
         var deserializeOptions = new JsonSerializerOptions
         {
