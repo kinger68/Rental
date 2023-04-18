@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Rental.Configurations;
 using Rental.Data;
 using Rental.Services;
 
@@ -23,6 +24,14 @@ namespace Rental
             // Domain Services - Add the services which support all the domain objects
             // (RentalPropeties and Renters)
             builder.Services.AddScoped<IRentalPropertyService, RentalPropertyService>();
+            
+            // Add Entity Framework - transient so that DbContexts are not shared between operations
+            builder.Services.AddDbContext<RentalPropertyContext>(ServiceLifetime.Transient);
+            builder.Services.AddDbContext<CityContext>(ServiceLifetime.Transient);
+            
+            // Configure RDS Connection String for Postgres
+            string connectionString = "server=127.0.0.1;uid=root;pwd=;database=Rental";
+            builder.Services.AddSingleton(serviceProvider => new RDSConnectionStringConfig(connectionString));
 
             // Persistence Registration
             builder.Services.AddScoped<IRentalPropertyRepository, EfRentalRepository>();

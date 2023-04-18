@@ -1,24 +1,22 @@
 using Microsoft.EntityFrameworkCore;
+using Rental.Configurations;
 using Rental.Data.DataModels;
 
 namespace Rental.Data;
 
 public class CityContext : DbContext
 {
-    private readonly string connectionString;
+    private RDSConnectionStringConfig RdsConnectionStringConfig { get; }
 
-    public CityContext(string connectionString)
+    public CityContext(RDSConnectionStringConfig rdsConnectionStringConfig)
     {
-        this.connectionString = connectionString;
-        
-        // Hard coding connection string for testing until I add pass connection string to DI
-        this.connectionString = "server=127.0.0.1;uid=root;pwd=;database=Rental";
+        RdsConnectionStringConfig = rdsConnectionStringConfig;
     }
     
     public DbSet<CityDto> Cities { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySQL(connectionString);
+        optionsBuilder.UseMySQL(RdsConnectionStringConfig.ConnectionString);
     }
 }
