@@ -24,6 +24,10 @@ public class RentalPropertyController : ControllerBase
         [FromQuery] string city)
     {
         IEnumerable<RentalProperty> rentalProperties = await _rentalPropertyService.FindRentalProperties(city);
+        if (!rentalProperties.Any())
+        {
+            return NotFound("There are no rental properties in " + city);
+        }
         return new JsonResult(rentalProperties);
     }
 

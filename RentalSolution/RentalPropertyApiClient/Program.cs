@@ -15,7 +15,11 @@ namespace RentalPropertyApiClient
             client.DefaultRequestHeaders.Add("User-Agent", "Rental Property Client");
             client.BaseAddress = new Uri("http://localhost:5295/");
 
-            // await CreateRentalProperty.createRentalProperty(client);
+            Console.WriteLine("Rental properties by City using REST API prior to creating new property");
+            await QueryPropertiesByCity.QueryByCity(client, "Boston");
+            await CreateRentalProperty.createRentalProperty(client);
+
+            Console.WriteLine("\n\nRental properties by City using REST API after to creating new property");
             await QueryPropertiesByCity.QueryByCity(client, "Boston");
         }
     }

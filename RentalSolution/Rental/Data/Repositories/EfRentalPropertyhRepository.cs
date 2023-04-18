@@ -1,3 +1,4 @@
+using Org.BouncyCastle.Crypto.Engines;
 using Rental.Data.DataModels;
 using Rental.Data.Mapping;
 using Rental.Model;
@@ -32,6 +33,11 @@ public class EfRentalRepository : IRentalPropertyRepository
     public async Task<IEnumerable<RentalProperty>> GetRentalPropertiesByCity(string searchCity)
     {
         CityDto? city;
+        Boolean exists = _cityContext.Cities.Any(ci => ci.Name.Equals(searchCity));
+        if (!exists)
+        {
+            return Enumerable.Empty<RentalProperty>();
+        }
         city = _cityContext.Cities.Single(ci => ci.Name.Equals(searchCity));
 
         List<StreetDto> streets;
